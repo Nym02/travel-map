@@ -1,0 +1,6 @@
+.ReactModal__Overlay {
+  z-index: 1111 !important;
+}
+.ReactModal__Content {
+  inset: 200px 700px auto 700px !important;
+}

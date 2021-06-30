@@ -11,7 +11,13 @@ import Button from "@material-ui/core/Button";
 import Geocoder from "react-map-gl-geocoder";
 import RoomIcon from "@material-ui/icons/Room";
 import StarIcon from "@material-ui/icons/Star";
+import Modal from "react-modal";
 import { format } from "timeago.js";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 function App() {
   const [viewport, setViewport] = useState({
@@ -21,12 +27,15 @@ function App() {
     longitude: -122.4376,
     zoom: 8,
   });
+  const [currentUser, setCurrentUser] = useState(null);
   const [showPopup, setShowPopup] = useState("");
   const [pin, setPin] = useState([]);
   const [newPlace, setNewPlace] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [rating, setRating] = useState(0);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [register, setRegister] = useState(false);
 
   //show/hide pin popup
   const handlePinMarker = (id, latitude, longitude) => {
@@ -102,12 +111,108 @@ function App() {
       .then(() => getPins())
       .catch((err) => console.log(err));
   };
+
+  //handling login modals
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  //handling register modals
+
   console.log(title);
   console.log(description);
   console.log(rating);
 
   return (
     <>
+      <ToastContainer />
+      {/* login modal  */}
+      {/* <button onClick={openModal}>Open Modal</button> */}
+
+      <div>
+        <div
+          style={{
+            position: "absolute",
+            right: "0",
+            top: "15px",
+            zIndex: "1",
+          }}
+        >
+          {currentUser ? (
+            <Button
+              variant="contained"
+              style={{ marginRight: "10px" }}
+              color="primary"
+            >
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="contained"
+                style={{ marginRight: "10px" }}
+                color="primary"
+                onClick={openModal}
+              >
+                Login
+              </Button>
+              <Button
+                variant="contained"
+                style={{ marginRight: "10px" }}
+                color="secondary"
+                onClick={() => setRegister(true)}
+              >
+                Register
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* login modal  */}
+      <Modal
+        isOpen={modalIsOpen}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+      >
+        {/* <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2> */}
+        <div style={{ textAlign: "right" }}>
+          <Button variant="contained" color="secondary" onClick={closeModal}>
+            x
+          </Button>
+        </div>
+        <>
+          <Login />
+        </>
+      </Modal>
+
+      {/* Register Modal  */}
+      <Modal
+        isOpen={register}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+      >
+        {/* <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2> */}
+        <div style={{ textAlign: "right" }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setRegister(false)}
+          >
+            x
+          </Button>
+        </div>
+        <>
+          <Register />
+        </>
+      </Modal>
       <ReactMapGL
         ref={mapRef}
         {...viewport}
@@ -130,8 +235,8 @@ function App() {
             <Marker
               latitude={pin?.latitude}
               longitude={pin?.longitude}
-              offsetLeft={-20}
-              offsetTop={-10}
+              offsetLeft={-viewport.zoom * 2.5}
+              offsetTop={-viewport.zoom * 5}
               onClick={() =>
                 handlePinMarker(pin?._id, pin?.latitude, pin?.longitude)
               }
