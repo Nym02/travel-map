@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { TextField, Typography, Button } from "@material-ui/core";
 import { toast } from "react-toastify";
 
-function Register() {
+function Register({ setRegister }) {
+  console.log(setRegister);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,8 +33,11 @@ function Register() {
         },
         body: JSON.stringify(registerData),
       }).then((res) => {
+        console.log("reg", res);
         if (res.status === 200) {
           toast.success("Registration Successful");
+        } else if (res.status !== 200) {
+          toast.error("Please Enter Unique Username & Email");
         }
       });
     }

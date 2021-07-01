@@ -12,6 +12,7 @@ router.post("/register", async (req, res) => {
     const hashPass = await bcrypt.hash(req.body.password, salt);
 
     //create new user
+
     const newUser = new User({
       username: req.body.username,
       email: req.body.email,
@@ -20,8 +21,10 @@ router.post("/register", async (req, res) => {
 
     const createUser = await newUser.save();
     res.status(200).json(createUser._id);
-  } catch (error) {
-    res.status(500).json(error);
+  } catch (err) {
+    res.status(500).send({
+      error: "Please Enter Unique Username & Email",
+    });
   }
 });
 

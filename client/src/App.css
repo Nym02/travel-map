@@ -4,3 +4,11 @@
 .ReactModal__Content {
   inset: 200px 700px auto 700px !important;
 }
+/* .overlays {
+  position: absolute !important;
+  width: 5% !important;
+  height: 10% !important;
+  overflow: hidden !important;
+  right: 0 !important;
+  bottom: 0 !important;
+} */

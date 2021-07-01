@@ -1,6 +1,6 @@
 import react, { useCallback, useEffect, useRef } from "react";
 import { useState } from "react";
-import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import ReactMapGL, { Marker, Popup, GeolocateControl } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import TextField from "@material-ui/core/TextField";
@@ -61,8 +61,7 @@ function App() {
   useEffect(() => {
     getPins();
   }, [getPins?._id, getPins?.longitude]);
-  console.log(pin);
-
+  console.log("pin", pin);
   const handleMarkerAdd = (e) => {
     // const [longitude, latitude] = e.lngLat;
 
@@ -134,7 +133,7 @@ function App() {
       {/* login modal  */}
       {/* <button onClick={openModal}>Open Modal</button> */}
 
-      <div>
+      {/* <div>
         <div
           style={{
             position: "absolute",
@@ -172,7 +171,7 @@ function App() {
             </>
           )}
         </div>
-      </div>
+      </div> */}
 
       {/* login modal  */}
       <Modal
@@ -222,6 +221,8 @@ function App() {
         onDblClick={handleMarkerAdd}
         transitionDuration="200"
       >
+        <GeolocateControl style={{ right: "55px", bottom: "55px" }} />
+        {/* <Geolocation /> */}
         <Geocoder
           mapRef={mapRef}
           // containerRef={geocoderContainerRef}
